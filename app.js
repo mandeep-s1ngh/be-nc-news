@@ -7,6 +7,8 @@ const {
   getArticleByArticleId,
 } = require("./controllers/articlesController");
 
+const { getCommentsByArticleId } = require("./controllers/commentsController");
+
 const {
   handleServerError,
   handle404nonExistentPaths,
@@ -19,6 +21,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleByArticleId);
+
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.use(handle404nonExistentPaths);
 
