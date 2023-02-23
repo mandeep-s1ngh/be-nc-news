@@ -164,6 +164,7 @@ describe("app", () => {
               created_at: expect.any(String),
             });
           });
+          expect(comments).toHaveLength(1);
         });
     });
 
@@ -177,6 +178,15 @@ describe("app", () => {
         });
     });
 
+    it("200: GET - Responds with 200 error msg for a valid article id that has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).toEqual({ comments: [] });
+        });
+    });
+
     it("400: GET - Responds with 400 error msg for an invalid article id", () => {
       return request(app)
         .get("/api/articles/notAnId/comments")
@@ -187,13 +197,12 @@ describe("app", () => {
         });
     });
 
-    it("404: GET - Responds with 404 error msg for a valid article id that has no comments", () => {
+    it("404: GET = Responds with 404 error msg for a article id that does not exist", () => {
       return request(app)
-        .get("/api/articles/2/comments")
+        .get("/api/articles/999/comments")
         .expect(404)
-        .then((response) => {
-          ({ msg } = response.body);
-          expect(msg).toBe("No comments found for article");
+        .then(({ body }) => {
+          expect(body.msg).toEqual("No article found");
         });
     });
   });
