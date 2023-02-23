@@ -104,7 +104,7 @@ describe("app", () => {
         });
     });
 
-    it("400: GET - Responds with a 400 error msg for ", () => {
+    it("400: GET - Responds with a 400 error msg for an invalid article id", () => {
       return request(app)
         .get("/api/articles/notAnId")
         .expect(400)
