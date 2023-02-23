@@ -125,3 +125,85 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("/api/articles/:article_id/comments", () => {
+    it("200: GET - Responds with an array for an article that has any comments", () => {
+      return request(app)
+        .get("/api/articles/6/comments")
+        .expect(200)
+        .then((response) => {
+          ({ comments } = response.body);
+          expect(comments).toBeInstanceOf(Array);
+        });
+    });
+
+    it("200: GET - Responds with the correct array length for an article that has more than 1 comment", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then((response) => {
+          ({ comments } = response.body);
+          expect(comments).toHaveLength(2);
+        });
+    });
+
+    it("200: GET - Responds with the array of object/s that have the following properties: comment_id, body, article_id, author, votes: created_at", () => {
+      return request(app)
+        .get("/api/articles/6/comments")
+        .expect(200)
+        .then((response) => {
+          ({ comments } = response.body);
+          comments.forEach((comment) => {
+            expect(comment).toMatchObject({
+              comment_id: expect.any(Number),
+              body: expect.any(String),
+              article_id: expect.any(Number),
+              author: expect.any(String),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+            });
+          });
+          expect(comments).toHaveLength(1);
+        });
+    });
+
+    it("200: GET - Responds with the array of comments in descending order if article has more than 1 comment", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then((response) => {
+          ({ comments } = response.body);
+          expect(comments).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    it("200: GET - Responds with 200 error msg for a valid article id that has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).toEqual({ comments: [] });
+        });
+    });
+
+    it("400: GET - Responds with 400 error msg for an invalid article id", () => {
+      return request(app)
+        .get("/api/articles/notAnId/comments")
+        .expect(400)
+        .then((response) => {
+          ({ msg } = response.body);
+          expect(msg).toBe("Bad Request");
+        });
+    });
+
+    it("404: GET = Responds with 404 error msg for a article id that does not exist", () => {
+      return request(app)
+        .get("/api/articles/999/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("No article found");
+        });
+    });
+  });
+});

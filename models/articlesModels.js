@@ -12,7 +12,10 @@ exports.fetchArticles = () => {
 
 exports.fetchArticleByArticleId = (article_id) => {
   return db
-    .query("SELECT * FROM articles where article_id = $1;", [article_id])
+    .query(
+      "SELECT * FROM articles where article_id = $1 ORDER BY created_at DESC;",
+      [article_id]
+    )
     .then(({ rows }) => {
       const article = rows[0];
       if (!article) {
