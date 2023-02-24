@@ -453,17 +453,7 @@ describe("app", () => {
 
 describe("app", () => {
   describe("GET /api/users", () => {
-    it("200: GET - Responds with an array of objects", () => {
-      return request(app)
-        .get("/api/users")
-        .expect(200)
-        .then((response) => {
-          ({ users } = response.body);
-          expect(users).toBeInstanceOf(Array);
-        });
-    });
-
-    it("200: GET - Objects contain the correct properties", () => {
+    it("200: GET - Responds with an array of objects that contain the correct properties", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
