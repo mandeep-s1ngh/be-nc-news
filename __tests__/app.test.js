@@ -325,3 +325,128 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("PATCH /api/articles/:article_id", () => {
+    it("200: PATCH - Responds with an object", () => {
+      const requestBody = {
+        inc_votes: 1,
+      };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(requestBody)
+        .expect(200)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(typeof updatedArticle).toBe("object");
+        });
+    });
+
+    it("200: PATCH - Responds with the correct properties on the object ", () => {
+      const requestBody = {
+        inc_votes: 5,
+      };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(requestBody)
+        .expect(200)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(updatedArticle).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: expect.any(String),
+              topic: expect.any(String),
+              body: expect.any(String),
+              author: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              article_img_url: expect.any(String),
+            })
+          );
+        });
+    });
+
+    it("200: PATCH - Responds with the votes property on article incremented when inc_votes is a positive integer", () => {
+      const requestBody = {
+        inc_votes: 15,
+      };
+      return request(app)
+        .patch("/api/articles/3")
+        .send(requestBody)
+        .expect(200)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(updatedArticle.votes).toBe(15);
+        });
+    });
+
+    it("200: PATCH - Responds with the votes property on article decremented when inc_votes is a negative integer", () => {
+      const requestBody = {
+        inc_votes: -100,
+      };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(requestBody)
+        .expect(200)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(updatedArticle.votes).toBe(0);
+        });
+    });
+
+    it("400: PATCH - Responds with a 400 error msg when missing a required field", () => {
+      const requestBody = {};
+      return request(app)
+        .patch("/api/articles/1")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("400: PATCH - Responds with a 400 error msg for incorrect data type in request body", () => {
+      const requestBody = {
+        inc_votes: "banana",
+      };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("400: PATCH - Responds with a 400 error msg for invalid article id", () => {
+      const requestBody = {
+        inc_votes: 5,
+      };
+      return request(app)
+        .patch("/api/articles/notAnId")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("404: PATCH - Responds with a 404 error msg for a valid but non existent article_id", () => {
+      const requestBody = {
+        inc_votes: 5,
+      };
+      return request(app)
+        .patch("/api/articles/999")
+        .send(requestBody)
+        .expect(404)
+        .then(({ body }) => {
+          ({ updatedArticle } = body);
+          expect(body.msg).toBe("No article found");
+        });
+    });
+  });
+});
