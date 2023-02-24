@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("app", () => {
-  describe("/api/topics", () => {
+  describe("GET /api/topics", () => {
     it("200: GET - Responds with an array of topic objects. each object should have a slug and description properties", () => {
       return request(app)
         .get("/api/topics")
@@ -34,8 +34,8 @@ describe("app", () => {
 });
 
 describe("app", () => {
-  describe("/api/articles", () => {
-    it("200: GET - Responds with an array of article objects. each object should have the following properties: author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
+  describe("GET /api/articles", () => {
+    it("200: GET - Responds with an array of article objects. each object should have the correct properties", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -72,7 +72,7 @@ describe("app", () => {
 });
 
 describe("app", () => {
-  describe("/api/articles/:article_id", () => {
+  describe("GET /api/articles/:article_id", () => {
     it("200: GET - Responds with an article object", () => {
       return request(app)
         .get("/api/articles/6")
@@ -83,7 +83,7 @@ describe("app", () => {
         });
     });
 
-    it("200: GET - object contains these properties: author, title, article_id, body, topic, created_at, votes, article_img_url", () => {
+    it("200: GET - object contains the correct properties", () => {
       return request(app)
         .get("/api/articles/3")
         .expect(200)
@@ -127,7 +127,7 @@ describe("app", () => {
 });
 
 describe("app", () => {
-  describe("/api/articles/:article_id/comments", () => {
+  describe("GET /api/articles/:article_id/comments", () => {
     it("200: GET - Responds with an array for an article that has any comments", () => {
       return request(app)
         .get("/api/articles/6/comments")
@@ -446,6 +446,38 @@ describe("app", () => {
         .then(({ body }) => {
           ({ updatedArticle } = body);
           expect(body.msg).toBe("No article found");
+        });
+    });
+  });
+});
+
+describe("app", () => {
+  describe("GET /api/users", () => {
+    it("200: GET - Responds with an array of objects that contain the correct properties", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((response) => {
+          ({ users } = response.body);
+          users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+                name: expect.any(String),
+                avatar_url: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    it("200: GET - Responds with the correct number of users", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((response) => {
+          ({ users } = response.body);
+          expect(users).toHaveLength(4);
         });
     });
   });
