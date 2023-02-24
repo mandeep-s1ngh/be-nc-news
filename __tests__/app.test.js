@@ -296,18 +296,31 @@ describe("app", () => {
         });
     });
 
-    it("400: POST - Responds with a 400 error msg for invalid schema validation", () => {
+    it("404: POST - returns a 404 error msg for a invalid username", () => {
       const requestBody = {
-        author: 62345,
+        author: "cool_dude",
         body: "No, you are not a cat",
       };
       return request(app)
-        .post("/api/articles/11/comments")
+        .post("/api/articles/8/comments")
         .send(requestBody)
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
-          ({ comment } = body);
-          expect(body.msg).toBe("Bad Request");
+          expect(body.msg).toEqual("Not found");
+        });
+    });
+
+    it("404: POST - returns a 404 error msg for a non existent article_id", () => {
+      const requestBody = {
+        author: "lurker",
+        body: "No, you are not a cat",
+      };
+      return request(app)
+        .post("/api/articles/999/comments")
+        .send(requestBody)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Not found");
         });
     });
   });
