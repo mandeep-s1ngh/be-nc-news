@@ -27,3 +27,15 @@ exports.fetchArticleByArticleId = (article_id) => {
       return article;
     });
 };
+
+exports.updateVotes = (article_id, inc_votes) => {
+  return db
+    .query(
+      "UPDATE articles SET votes = votes + $2 WHERE article_id = $1 RETURNING *;",
+      [article_id, inc_votes]
+    )
+    .then(({ rows }) => {
+      const updatedArticle = rows[0];
+      return updatedArticle;
+    });
+};

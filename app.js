@@ -5,6 +5,7 @@ const { getTopics } = require("./controllers/topicsController");
 const {
   getArticles,
   getArticleByArticleId,
+  patchArticleVotes,
 } = require("./controllers/articlesController");
 
 const {
@@ -30,6 +31,8 @@ app.get("/api/articles/:article_id", getArticleByArticleId);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.post("/api/articles/:article_id/comments", postComment);
+
+app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.use(handle404nonExistentPaths);
 
