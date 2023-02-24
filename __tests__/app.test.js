@@ -207,3 +207,108 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("POST /api/articles/:article_id/comments", () => {
+    it("201: POST - Responds with an object ", () => {
+      const requestBody = {
+        author: "rogersop",
+        body: "you aint you when you are hungry",
+      };
+      return request(app)
+        .post("/api/articles/7/comments")
+        .send(requestBody)
+        .expect(201)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(typeof comment).toBe("object");
+        });
+    });
+
+    it("201: POST - Responds with the correct properties on the object", () => {
+      const requestBody = {
+        author: "butter_bridge",
+        body: "You are better off getting a mac",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(requestBody)
+        .expect(201)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              body: expect.any(String),
+              article_id: expect.any(Number),
+              author: expect.any(String),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+
+    it("201: POST - should ignore additional properties in the request body object and respond with an object that does not contain those properties ", () => {
+      const requestBody = {
+        author: "icellusedkars",
+        body: "You cannot sue Mitch",
+        posted_from: "Mobile",
+      };
+      return request(app)
+        .post("/api/articles/4/comments")
+        .send(requestBody)
+        .expect(201)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(comment).toEqual(
+            expect.not.objectContaining({ posted_from: expect.any(String) })
+          );
+        });
+    });
+
+    it("400: POST - Responds with a 400 error msg when a missing a required field", () => {
+      const requestBody = {
+        author: "icellusedkars",
+      };
+      return request(app)
+        .post("/api/articles/12/comments")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("400: POST - Responds with a 400 error msg for an invalid id", () => {
+      const requestBody = {
+        author: "icellusedkars",
+        body: "Wow, that is a big moustache",
+      };
+      return request(app)
+        .post("/api/articles/notAnId/comments")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("400: POST - Responds with a 400 error msg for invalid schema validation", () => {
+      const requestBody = {
+        author: 62345,
+        body: "No, you are not a cat",
+      };
+      return request(app)
+        .post("/api/articles/11/comments")
+        .send(requestBody)
+        .expect(400)
+        .then(({ body }) => {
+          ({ comment } = body);
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+  });
+});

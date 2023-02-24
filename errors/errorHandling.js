@@ -13,7 +13,12 @@ exports.handleCustomErrors = (err, req, res, next) => {
 };
 
 exports.handlePSQL400s = (err, req, res, next) => {
-  if (err.code === "22P02") {
+  if (
+    err.code === "22P02" ||
+    err.code === "42703" ||
+    err.code === "23502" ||
+    err.code === "23503"
+  ) {
     res.status(400).send({ msg: "Bad Request" });
   } else {
     next(err);
@@ -21,5 +26,6 @@ exports.handlePSQL400s = (err, req, res, next) => {
 };
 
 exports.handleServerError = (err, req, res, next) => {
+  console.log(err);
   if (err) res.status(500).send({ msg: "Internal Server Error!" });
 };
