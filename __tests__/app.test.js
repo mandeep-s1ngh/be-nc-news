@@ -482,3 +482,100 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("GET /api/articles (queries)", () => {
+    it("200: GET - Responds with an array of objects containing all the corresponding articles from a specific topic query", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then((response) => {
+          ({ articles } = response.body);
+          const filteredTopic = "mitch";
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                topic: filteredTopic,
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String),
+                comment_count: expect.any(String),
+              })
+            );
+            expect(articles).toHaveLength(11);
+          });
+        });
+    });
+
+    it("200: GET - Responds with no articles for a valid topic that has no articles associated with it", () => {
+      return request(app)
+        .get("/api/articles?topic=paper")
+        .expect(200)
+        .then((response) => {
+          ({ articles } = response.body);
+          expect(articles).toHaveLength(0);
+        });
+    });
+
+    it("200: GET - Responds with the articles sorted by any valid column", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title")
+        .expect(200)
+        .then((response) => {
+          ({ articles } = response.body);
+          expect(articles).toBeSortedBy("title", { descending: true });
+        });
+    });
+
+    it("200: GET - Responds with the articles ordered by date in ascending order", () => {
+      return request(app)
+        .get("/api/articles?&order=asc")
+        .expect(200)
+        .then((response) => {
+          ({ articles } = response.body);
+          expect(articles).toBeSortedBy("created_at", { descending: false });
+        });
+    });
+
+    it("200: GET - Responds with the articles ordered by date in descending order", () => {
+      return request(app)
+        .get("/api/articles?&order=DESC")
+        .expect(200)
+        .then((response) => {
+          ({ articles } = response.body);
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    it("400: GET - Responds with a 400 error msg for an invalid sort by option", () => {
+      return request(app)
+        .get("/api/articles?sort_by=banana")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("400: GET - Responds with a 400 error msg for an invalid order query", () => {
+      return request(app)
+        .get("/api/articles?&order=newest")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+
+    it("404: GET - Responds with a 404 error msg for a non existent topic", () => {
+      return request(app)
+        .get("/api/articles?topic=banana")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No topic found");
+        });
+    });
+  });
+});
