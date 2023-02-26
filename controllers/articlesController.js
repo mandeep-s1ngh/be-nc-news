@@ -1,11 +1,19 @@
 const {
+  checkTopicExists,
   fetchArticles,
   fetchArticleByArticleId,
   updateVotes,
 } = require("../models/articlesModels");
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles()
+  const { topic } = req.query;
+  const { sort_by } = req.query;
+  const { order } = req.query;
+
+  checkTopicExists(topic)
+    .then((selectedTopic) => {
+      return fetchArticles(selectedTopic, sort_by, order);
+    })
     .then((articles) => {
       res.status(200).send({ articles });
     })

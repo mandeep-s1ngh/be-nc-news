@@ -3,9 +3,13 @@ exports.handle404nonExistentPaths = (req, res) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  if (err.msg === "No article found") {
+  if (err.status && err.msg) {
+    res.status(err.status).send({ msg: err.msg });
+  } else if (err.msg === "No article found") {
     res.status(404).send({ msg: err.msg });
   } else if (err.msg === "No comments found for article") {
+    res.status(404).send({ msg: err.msg });
+  } else if (err.msg === "No topic found") {
     res.status(404).send({ msg: err.msg });
   } else {
     next(err);

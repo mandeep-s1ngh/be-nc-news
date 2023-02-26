@@ -16,9 +16,9 @@ const {
 const { getUsers } = require("./controllers/usersController");
 
 const {
+  handleCustomErrors,
   handleServerError,
   handle404nonExistentPaths,
-  handleCustomErrors,
   handlePSQL400s,
 } = require("./errors/errorHandling");
 
