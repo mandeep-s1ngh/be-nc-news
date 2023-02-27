@@ -579,3 +579,60 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("GET /api/articles/:article_id (comment count)", () => {
+    it("200: GET - Responds with an article object", () => {
+      return request(app)
+        .get("/api/articles/5")
+        .expect(200)
+        .then((response) => {
+          ({ article } = response.body);
+          expect(typeof article).toBe("object");
+          // console.log(response.body);
+        });
+    });
+
+    it("200: GET - object contains the correct properties", () => {
+      return request(app)
+        .get("/api/articles/3")
+        .expect(200)
+        .then((response) => {
+          ({ article } = response.body);
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: expect.any(String),
+              topic: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              article_img_url: expect.any(String),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+    });
+
+    it("400: GET - Responds with a 400 error msg for an invalid article id", () => {
+      return request(app)
+        .get("/api/articles/notAnId")
+        .expect(400)
+        .then((response) => {
+          ({ msg } = response.body);
+          expect(msg).toBe("Bad Request");
+        });
+    });
+
+    it("404: GET - Responds with a 404 error msg for a valid but non existent article id", () => {
+      return request(app)
+        .get("/api/articles/999")
+        .expect(404)
+        .then((response) => {
+          ({ msg } = response.body);
+          expect(msg).toBe("No article found");
+        });
+    });
+  });
+});
