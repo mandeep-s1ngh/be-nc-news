@@ -636,3 +636,45 @@ describe("app", () => {
     });
   });
 });
+
+describe("app", () => {
+  describe("DELETE /api/comments/:comment_id", () => {
+    it("204: DELETE - Responds with an object", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(typeof body).toBe("object");
+        });
+    });
+
+    it("204: DELETE - Responds with an empty object ", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toEqual({});
+        });
+    });
+
+    it("400: DELETE - Responds with a 400 error msg for an invalid comment id", () => {
+      return request(app)
+        .delete("/api/comments/banana")
+        .expect(400)
+        .then((response) => {
+          ({ msg } = response.body);
+          expect(msg).toBe("Bad Request");
+        });
+    });
+
+    it("404: DELETE - Responds with a 404 error msg for a valid but non existent comment id", () => {
+      return request(app)
+        .delete("/api/comments/999")
+        .expect(404)
+        .then((response) => {
+          ({ msg } = response.body);
+          expect(msg).toBe("No comment found");
+        });
+    });
+  });
+});
