@@ -11,6 +11,7 @@ const {
 const {
   getCommentsByArticleId,
   postComment,
+  deleteCommentById,
 } = require("./controllers/commentsController");
 
 const { getUsers } = require("./controllers/usersController");
@@ -37,6 +38,8 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.get("/api/users", getUsers);
+
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 app.use(handle404nonExistentPaths);
 
