@@ -589,7 +589,6 @@ describe("app", () => {
         .then((response) => {
           ({ article } = response.body);
           expect(typeof article).toBe("object");
-          // console.log(response.body);
         });
     });
 
@@ -674,6 +673,30 @@ describe("app", () => {
         .then((response) => {
           ({ msg } = response.body);
           expect(msg).toBe("No comment found");
+        });
+    });
+  });
+});
+
+describe("app", () => {
+  describe("GET /api", () => {
+    it("200: GET - Responds with an object", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then((response) => {
+          ({ endpoints } = response.body);
+          expect(typeof endpoints).toBe("object");
+        });
+    });
+
+    it("200: GET - Responds with all the endpoint objects from the endpoints.json file", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then((response) => {
+          ({ endpoints } = response.body);
+          expect(Object.keys(endpoints).length).toBe(11);
         });
     });
   });
