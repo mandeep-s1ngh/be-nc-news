@@ -16,6 +16,8 @@ const {
 
 const { getUsers } = require("./controllers/usersController");
 
+const { getEndpoints } = require("./controllers/endpointsController");
+
 const {
   handleCustomErrors,
   handleServerError,
@@ -38,6 +40,8 @@ app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.get("/api/users", getUsers);
+
+app.get("/api", getEndpoints);
 
 app.delete("/api/comments/:comment_id", deleteCommentById);
 
