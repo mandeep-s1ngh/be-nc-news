@@ -2,8 +2,7 @@
 
 ## <ins>Summary</ins>
 
-This project is part of my portfolio whilst enrolled on the NorthCoders Software Engineering bootcamp. I am creating a RESTful API for a news style website.
-The database system used is [PostgreSQL](https://www.postgresql.org/), and the interaction with the database will be done using [node-postgres](https://node-postgres.com/). <br>
+This project is part of my portfolio whilst enrolled on the NorthCoders Software Engineering bootcamp. I am creating a RESTful API for a news style website. The web framework used is [Express](https://expressjs.com/). The database system used is [PostgreSQL](https://www.postgresql.org/), and the interaction with the database will be done using [node-postgres](https://node-postgres.com/). <br>
 
 ## <ins>Hosted Version</ins>
 
