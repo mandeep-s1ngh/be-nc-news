@@ -2,28 +2,47 @@
 
 ## <ins>Summary</ins>
 
-This project is part of my portfolio whilst enrolled on the NorthCoders Software Engineering bootcamp. I am creating a RESTful API for a news style website.
-The database system used is [PostgreSQL](https://www.postgresql.org/), and the interaction with the database will be done using [node-postgres](https://node-postgres.com/). <br>
+This project is part of my portfolio whilst enrolled on the NorthCoders Software Engineering bootcamp. I am creating a RESTful API for a news website.
+
+It uses Express, PostgreSQL, and the interaction with the database was done using node-postgres.
+
+---
 
 ## <ins>Hosted Version</ins>
 
-You can find the hosted version [here](https://nc-news-api-e6xe.onrender.com/) <br>
-The list of available endpoints can be found [here](https://nc-news-api-e6xe.onrender.com/api) <br>
-I would recommend the [JSON viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) extension that will display the JSON data in a nicely formatted way.
+Firstly, I would recommend installing the [JSON viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) chrome extension that will display the JSON data in a nicely formatted way.
+
+You can find the hosted version of the API here - https://nc-news-api-e6xe.onrender.com/
+
+The list of available endpoints can be found here - https://nc-news-api-e6xe.onrender.com/api
+
+---
+
+## <ins>Screenshots</ins>
+
+![Endpoints](./screenshots/endpoints.png)
+
+---
+
+## <ins>Tech Stack</ins>
+
+- Express
+- JavaScript
+- PostgreSQL
+
+---
 
 ## <ins>Local Setup</ins>
 
-If you would like to run this project locally, please make sure you will have at least **Node.js v18** and **PostgreSQL v14.7** installed. You can then **_fork_** this repo to have a copy inside your Github repositories section and then **_clone_** the forked repo.
+1. To clone the repo, open up your terminal and run git clone https://github.com/mandeep-s1ngh/be-nc-news.git - once you have it cloned, move the folder to your usual directory for projects (if necessary).
 
-## <ins>Dependencies</ins>
+2. You can then open up the folder in your code editor of choice and run `npm install` to install all the dependencies.
 
-Once cloned, CD into the root of the project and install the dependencies by running:
-
-`npm install`
+3. You would need to have PostgreSQL installed which will fire up a PostgreSQL server up once installed and allow you to setup the databases (info can be found further below).
 
 ## <ins>Environment Variables</ins>
 
-You will also need to define the `PGDATABASE` environment variable which is used by PSQL to define the name of the databases to be used for the API.
+Once that is done, You will need to define the `PGDATABASE` environment variable which is used by PSQL to define the name of the databases to be used for the API.
 There are two databases: one for the test data and one for the dev data.
 To set up the environment variables, please create the following two files in the root of the project:
 
@@ -33,13 +52,20 @@ To set up the environment variables, please create the following two files in th
 
 ## <ins>Setup and Seed the local databases</ins>
 
-CD into the root of the project then:
+You can then proceed to setup and seed the databases by opening a terminal inside the root of the project then:
 
 1.Setup the databases: `npm run setup-dbs`
 
 2.Seed the databases: `npm run seed`
 
-## <ins>Running Test Suite</ins>
+## <ins>Running the Test Suite</ins>
 
-[Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) are used for the test suite and if you would like to run the tests associated with each endpoint, please install the packages as a dev dependency by running `npm install -D jest` and `npm install -D supertest` <br> After installing, you can run the test file: CD into the root of the project and run `npm test app.test.js` <br>
+[Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) are used for the test suite and if you would like to run the tests associated with each endpoint.
+
+You can run the test file by opening a terminal in the root of the project and run `npm test app.test.js`
+
 You can append **.only** (which is a Jest global) to a describe block to run the tests associated with a specific endpoint or to an it block to run a specific test.
+
+## <ins>Interacting with the endpoints</ins>
+
+You can run `npm start` to start the server and use something like [Insomnia](https://insomnia.rest/) to interact with the endpoints, send requests and recieve responses.
