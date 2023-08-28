@@ -40,6 +40,8 @@ The list of available endpoints can be found here - https://nc-news-api-e6xe.onr
 
 3. You would need to have PostgreSQL installed which will fire up a PostgreSQL server up once installed and allow you to setup the databases (info can be found further below).
 
+---
+
 ## <ins>Environment Variables</ins>
 
 Once that is done, You will need to define the `PGDATABASE` environment variable which is used by PSQL to define the name of the databases to be used for the API.
@@ -50,6 +52,8 @@ To set up the environment variables, please create the following two files in th
 
 2. `.env.development` which will need to contain the following line of code: `PGDATABASE=nc_news`
 
+---
+
 ## <ins>Setup and Seed the local databases</ins>
 
 You can then proceed to setup and seed the databases by opening a terminal inside the root of the project then:
@@ -58,6 +62,8 @@ You can then proceed to setup and seed the databases by opening a terminal insid
 
 2.Seed the databases: `npm run seed`
 
+---
+
 ## <ins>Running the Test Suite</ins>
 
 [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) are used for the test suite and if you would like to run the tests associated with each endpoint.
@@ -65,6 +71,8 @@ You can then proceed to setup and seed the databases by opening a terminal insid
 You can run the test file by opening a terminal in the root of the project and run `npm test app.test.js`
 
 You can append **.only** (which is a Jest global) to a describe block to run the tests associated with a specific endpoint or to an it block to run a specific test.
+
+---
 
 ## <ins>Interacting with the endpoints</ins>
 
