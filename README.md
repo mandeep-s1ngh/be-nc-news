@@ -28,6 +28,7 @@ The list of available endpoints can be found here - https://nc-news-api-e6xe.onr
 
 - Express
 - JavaScript
+- Jest
 - PostgreSQL
 
 ---
